@@ -50,3 +50,7 @@ Always verify changes by building and running the binary.
 ## Git Conventions
 -   **Commit Messages:** Use Conventional Commits (e.g., `feat: ...`, `fix: ...`).
 -   **Scope:** Keep changes focused. If adding a new command, create a new module in `src/commands/` and register it in `main.rs`.
+
+## Resources
+
+For more information on developing plugins and marketplaces, refer to the [HOWTO_PLUGINS.md](HOWTO_PLUGINS.md) file in the root of this repository.
