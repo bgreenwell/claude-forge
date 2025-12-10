@@ -1,0 +1,32 @@
+# Rust build artifacts
+/target
+**/target/
+
+# Cargo lock file (uncomment if building a library)
+# Cargo.lock
+
+# Backup files
+**/*.rs.bk
+**/*.bk
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+Thumbs.db
+
+# Debug files
+*.pdb
+
+# Profiling
+*.profdata
+*.gcda
+*.gcno
+
+# Documentation
+/doc/
