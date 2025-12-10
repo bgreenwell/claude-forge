@@ -1,75 +1,52 @@
-# agents.md for cforge
+# AGENTS.md
 
-this document provides development guidelines for ai agents working on the `cforge` codebase.
+This document provides context and guidelines for AI agents working on the `claude-forge` codebase.
 
-## project overview
+## Project Overview
 
-`cforge` is a rust-based command-line tool for scaffolding and managing "claude code" marketplaces and plugins. it ensures a consistent and valid structure for all components, from the marketplace root down to individual skills and commands. the tool is designed to be used both interactively and through automated scripts.
+`claude-forge` (binary name: `cforge`) is a Rust CLI tool for scaffolding and managing "Claude Code" marketplaces and plugins. It helps users create valid directory structures and configuration files for the Claude ecosystem.
 
-the core logic is built around the `clap` crate for command-line parsing and `serde` for manifest serialization (json). the project is structured into modules for commands, templates, and utilities.
+## Architecture & Code Structure
 
-## development setup
+The project is organized as a standard Rust binary:
 
-the project is built with rust. ensure you have a recent version of the rust toolchain installed.
+-   `src/main.rs`: Entry point. Defines the `clap` CLI structure (`Cli` struct and `Commands` enum).
+-   `src/commands/`: Contains the implementation logic for each subcommand.
+    -   `init.rs`: Scaffolds a new marketplace.
+    -   `add.rs`: Adds components (skills, commands) to plugins.
+    -   `register.rs`: Registers plugins in `marketplace.json`.
+    -   `validate.rs`: Validates plugin structure.
+-   `src/templates/`: Contains string templates or logic for generating boilerplate files.
+-   `src/utils/`: Shared utility functions (file I/O, string manipulation).
 
-1.  clone the repository.
-2.  navigate to the project root.
-3.  all dependencies are managed by cargo and are listed in `cargo.toml`.
+## Tech Stack
 
-## build, run, and test
+-   **Language:** Rust (2021 edition)
+-   **CLI Framework:** `clap` (derive feature)
+-   **Error Handling:** `anyhow`
+-   **Serialization:** `serde`, `serde_json`
 
-use the standard cargo commands for development workflows.
+## Development Workflow
 
--   **build (debug):**
-    ```bash
-    cargo build
-    ```
+### Dependency Management
+Dependencies are managed in `Cargo.toml`. No manual setup is required beyond having a working Rust toolchain.
 
--   **build (release):**
-    ```bash
-    cargo build --release
-    ```
+### Build & Run
+Always verify changes by building and running the binary.
 
--   **run:**
-    to run the application, use `cargo run` followed by the desired command and arguments. for example:
-    ```bash
-    cargo run -- init --name test-project
-    ```
+-   **Build:** `cargo build`
+-   **Run:** `cargo run -- <command> <args>`
+    -   *Example:* `cargo run -- init --name my-marketplace`
 
--   **test:**
-    this project does not yet have a formal test suite. manual testing by invoking the cli commands is the current method for validation.
+### Testing Strategy
+**Important:** This project currently lacks a formal test suite (`cargo test` will likely do nothing).
+-   **Validation:** You must manually verify changes by running the CLI commands against a temporary directory or file.
+-   **Sanity Check:** Ensure `cargo check` passes to catch type errors.
 
-## code style and conventions
+### Code Style
+-   **Formatting:** Run `cargo fmt` on all modified files.
+-   **Linting:** Run `cargo clippy` and fix warnings.
 
-this project follows standard rust conventions.
-
--   **formatting:**
-    all code should be formatted using `cargo fmt`. before committing, run the following command from the project root:
-    ```bash
-    cargo fmt
-    ```
-
--   **linting:**
-    use `cargo clippy` to catch common mistakes and improve the code. run it before committing:
-    ```bash
-    cargo clippy -- -d warnings
-    ```
-
-## git and commit conventions
-
--   **commits:**
-    write clear and concise commit messages. follow the conventional commits specification. each commit message should consist of a header, a body, and a footer.
-
-    example:
-    ```
-    feat: add --description flag to init command
-
-    this allows users to specify a marketplace description directly
-    from the command line, bypassing the interactive prompt.
-    ```
-
--   **branches:**
-    create a new branch for each new feature or bug fix. branch names should be descriptive (e.g., `feat/add-description-flag`, `fix/validation-bug`).
-
--   **pull requests:**
-    ensure all checks (format, lint) pass before submitting a pull request. provide a clear description of the changes in the pr.
+## Git Conventions
+-   **Commit Messages:** Use Conventional Commits (e.g., `feat: ...`, `fix: ...`).
+-   **Scope:** Keep changes focused. If adding a new command, create a new module in `src/commands/` and register it in `main.rs`.
