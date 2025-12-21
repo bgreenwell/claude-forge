@@ -32,12 +32,11 @@ struct PluginEntry {
     description: Option<String>,
 }
 
-// Plugin schema
+// Plugin schema (currently unused but kept for future enhancements)
+#[allow(dead_code)]
 #[derive(Deserialize)]
 struct Plugin {
-    #[allow(dead_code)]
     name: String,
-    #[allow(dead_code)]
     version: String,
     skills: Option<Vec<String>>,
     commands: Option<Vec<String>>,

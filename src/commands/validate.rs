@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 // Marketplace schema
 #[derive(Deserialize)]
 struct Marketplace {
+    #[allow(dead_code)]
     name: String,
     #[allow(dead_code)]
     description: Option<String>,
@@ -28,6 +29,7 @@ struct PluginEntry {
     name: String,
     version: String,
     source: String,
+    #[allow(dead_code)]
     description: Option<String>,
 }
 
@@ -119,7 +121,13 @@ fn validate_marketplace(root: &Path, fail_fast: bool) -> Result<()> {
     let mut failed = 0;
 
     for (idx, plugin) in marketplace.plugins.iter().enumerate() {
-        println!("[{}/{}] {} (v{})", idx + 1, total, plugin.name, plugin.version);
+        println!(
+            "[{}/{}] {} (v{})",
+            idx + 1,
+            total,
+            plugin.name,
+            plugin.version
+        );
 
         // Resolve plugin path
         let plugin_path = root.join(&plugin.source);
