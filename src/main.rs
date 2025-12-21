@@ -39,17 +39,32 @@ enum Commands {
         #[command(subcommand)]
         component: add::Component,
     },
-    /// Validate a plugin's structure and syntax
+    /// Validate a plugin or marketplace structure and syntax
     Validate {
-        /// Path to plugin (defaults to current dir)
+        /// Path to plugin or marketplace (defaults to current dir)
         #[arg(short, long)]
         path: Option<String>,
+
+        /// Stop validation at first error
+        #[arg(long)]
+        fail_fast: bool,
     },
 
     /// Register a local plugin into the marketplace.json registry
     Register {
         /// Relative path to the plugin folder (e.g. ./plugins/my-tool)
         path: String,
+    },
+
+    /// List plugins in marketplace or components in plugin
+    List {
+        /// Path to marketplace or plugin (defaults to current dir)
+        #[arg(short, long)]
+        path: Option<String>,
+
+        /// Show verbose output (description, path, status)
+        #[arg(short, long)]
+        verbose: bool,
     },
 }
 
@@ -60,8 +75,9 @@ fn main() -> Result<()> {
         Commands::Init { name, description } => init::init_marketplace(name, description)?,
         Commands::NewPlugin { name, description } => init::init_plugin(name, description)?,
         Commands::Add { plugin, component } => add::run(plugin, component)?,
-        Commands::Validate { path } => commands::validate::validate_plugin(path)?,
+        Commands::Validate { path, fail_fast } => commands::validate::validate(path, fail_fast)?,
         Commands::Register { path } => commands::register::register_plugin(path)?,
+        Commands::List { path, verbose } => commands::list::list(path, verbose)?,
     }
 
     Ok(())
