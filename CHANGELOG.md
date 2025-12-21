@@ -15,3 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `validate` command to check plugin integrity.
 - `register` command to add plugins to the marketplace manifest.
 - `--description` / `-d` flag for `init`, `new-plugin`, and `add` commands to bypass interactive prompts.
+- **Marketplace-level validation** - `validate` command now auto-detects marketplaces and validates all plugins.
+- **`--fail-fast` flag** for `validate` command to stop at first error (useful for CI/CD).
+- **`list` command** to list plugins in a marketplace or components in a plugin.
+- **`--verbose` / `-v` flag** for `list` command to show detailed information (description, status, paths).
+- **Smart context detection** - commands automatically adapt based on marketplace vs plugin directory.

@@ -7,8 +7,11 @@
 -   Scaffold new marketplaces and plugins with a single command.
 -   Inject components like skills, commands, agents, and hooks into plugins.
 -   Validate the integrity of plugin manifests and skill frontmatter.
+-   Auto-detect and validate entire marketplaces with all plugins.
+-   List plugins in a marketplace or components in a plugin.
 -   Register plugins with a marketplace, preventing duplicates and ensuring structural correctness.
 -   Interactive prompts for a guided experience, with command-line flags for automation.
+-   Smart context detection - commands adapt based on whether you're in a marketplace or plugin directory.
 
 ## Quick start
 
@@ -75,10 +78,75 @@ cargo install --path .
     cforge validate --path plugins/my-first-plugin
     ```
 
-6.  **Register the plugin:**
+    Or validate the entire marketplace from the root:
+    ```bash
+    cforge validate
+    ```
+    This auto-detects that you're in a marketplace and validates all plugins.
+
+6.  **List plugins in the marketplace:**
+    ```bash
+    cforge list
+    ```
+    For more details:
+    ```bash
+    cforge list --verbose
+    ```
+
+7.  **Register the plugin:**
     ```bash
     cforge register plugins/my-first-plugin
     ```
+
+## Commands
+
+### validate
+
+Validate a plugin or marketplace structure and syntax.
+
+**Auto-detection:**
+- In a marketplace directory: validates all plugins
+- In a plugin directory: validates the single plugin
+
+```bash
+# Validate current directory (auto-detects marketplace or plugin)
+cforge validate
+
+# Validate specific path
+cforge validate --path plugins/my-plugin
+
+# Stop at first error (useful for CI/CD)
+cforge validate --fail-fast
+```
+
+### list
+
+List plugins in a marketplace or components in a plugin.
+
+**Auto-detection:**
+- In a marketplace directory: lists all plugins
+- In a plugin directory: lists all components (skills, commands, agents, hooks)
+
+```bash
+# List plugins or components (auto-detects context)
+cforge list
+
+# Show detailed information
+cforge list --verbose
+```
+
+**Example output (marketplace):**
+```
+gemini-review             v1.1.0
+plagiarism-review         v1.0.0
+```
+
+**Example output (plugin directory):**
+```
+COMPONENT            TYPE       FILE
+------------------------------------------------------------
+gemini-review        skill      skills/gemini-review.md
+```
 
 ## Development
 
